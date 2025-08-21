@@ -21,6 +21,7 @@
 #define MAXITCOUNT            500
 #define GAMMA                 2.1
 
+// animation parameters
 #define REMINANIMATION        -2.0
 #define REMAXANIMATION        1.0
 #define IMMINANIMATION        -1.5
