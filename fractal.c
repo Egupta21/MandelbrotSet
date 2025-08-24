@@ -8,6 +8,12 @@
 #include <stdbool.h>
 #include <math.h>
 #include <complex.h>
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavutil/opt.h>
+#include <libavutil/imgutils.h>
+#include <libswscale/swscale.h>
+
 
 #define IMAGEWIDTH            980
 #define IMAGEHEIGHT           720
@@ -16,6 +22,8 @@
 
 #define IMAGEMINX             0
 #define IMAGEMINY             0
+
+#define RENDER                0
 
 // change gamma and max it count to adjust look
 #define MAXITCOUNT            500
@@ -63,7 +71,7 @@ uint16_t calculatePixelColor(double Re, double Imaginary)
     double t = (double)exitItCount / MAXITCOUNT;
 
     t = pow(t, GAMMA);
-
+   //return (uint16_t)(t * 22222);
    return (uint16_t)(t * 65535);
    
    // user this return statement to allow for more midtones
@@ -118,9 +126,6 @@ int main(void)
    double targetRe = -0.743643887037151;
    double targetIm = 0.13182590420533;
 
-   // make false to not autozoom
-   bool autoZoom = false;
-
    if (!FractalWindow) {
         printf("SDL_CreateWindow Error: %s\n", SDL_GetError());
         SDL_Quit();
@@ -129,11 +134,9 @@ int main(void)
 
    while(isRunning)
    {
-
-      if(autoZoom)
-      {
          //code for auto zoom
-
+      if(RENDER)
+      {
          double width  = config.ReMax - config.ReMin;
          double height = config.ImMax - config.ImMin;
 
